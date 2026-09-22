@@ -477,12 +477,6 @@
   .cta:focus-visible { outline: 3px solid var(--sol); outline-offset: 3px; }
   .cta-note { text-align: center; font-size: 13px; color: var(--muted); margin-top: 10px; }
 
-  @media (min-width: 900px) {
-    .hero .wrap { display: grid; grid-template-columns: 1fr 1.05fr; gap: 40px; align-items: center; }
-    .hero .mockup { grid-column: 2; grid-row: 1 / span 2; margin: 0; }
-    .hero .copy { grid-column: 1; }
-    .hero { padding: 56px 0; }
-  }
 
   /* SECCIÓN 2 — quiénes somos (el bloque es verbatim de la guía) */
   .about { background: var(--crema); }
@@ -491,6 +485,37 @@
   .about .auth-hero { height: clamp(260px, 70vw, 380px); }
   .about .auth-body { padding: 20px 22px 0; }
   .about .cta-box { padding: 6px 22px 44px; }
+
+  /* DESKTOP — the two sections share one 1120px grid, so they read as one page.
+     Section 1: copy on the left (top block sits on the bottom edge of its row,
+     button block hangs from the top) and the mockup centred across both rows.
+     Section 2: the verbatim .authority becomes `display: contents`, so its photo
+     and its body are placed straight onto the grid without touching its HTML. */
+  @media (min-width: 900px) {
+    .wrap { max-width: 1120px; padding: 0 40px; }
+    .hero { padding: 64px 0 72px; }
+    .hero .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr);
+                  grid-template-rows: auto auto; column-gap: 56px; }
+    .hero .copy:first-child { grid-column: 1; grid-row: 1; align-self: end; }
+    .hero .copy:last-child  { grid-column: 1; grid-row: 2; align-self: start; margin-top: 28px; }
+    .hero .mockup { grid-column: 2; grid-row: 1 / span 2; align-self: center; max-width: 620px; margin: 0 auto; }
+    .hero h1 { font-size: clamp(38px, 3.4vw, 46px); }
+    .hero .promise { font-size: 18px; }
+
+    .about { padding: 72px 0; }
+    .about .inner { max-width: 1120px; padding: 0 40px; display: grid;
+                    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+                    grid-template-rows: auto 1fr; column-gap: 56px; }
+    .about .authority { display: contents; }
+    .about .auth-hero { grid-column: 1; grid-row: 1 / span 2; height: auto; min-height: 520px;
+                        border-radius: 20px; box-shadow: var(--sh-deck); }
+    /* the photo is portrait: left in the flow it grows to its own ~740px and
+       outruns the text column; taken out of the flow, the grid row sets the height */
+    .about .auth-hero img { position: absolute; inset: 0; }
+    .about .auth-body { grid-column: 2; grid-row: 1; padding: 6px 0 0; }
+    .about .signoff { text-align: left; padding: 22px 0 0; }
+    .about .cta-box { grid-column: 2; grid-row: 2; padding: 24px 0 0; }
+  }
 
   footer { background: var(--fg); color: color-mix(in oklch, var(--pill-text) 62%, transparent);
            padding: 26px 22px 34px; font: 400 12px/1.6 var(--body); }
